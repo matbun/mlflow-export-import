@@ -143,8 +143,10 @@ def _upload_databricks_notebook(dbx_client, input_dir, src_run_dct, dst_notebook
 
 def _import_inputs(http_client, src_run_dct, run_id):
     inputs = src_run_dct.get("inputs")
-    dct = { "run_id": run_id, "datasets": inputs }
-    http_client.post("runs/log-inputs", dct)
+    if inputs:
+        # TODO: HTTP client does not work with authentication!
+        dct = { "run_id": run_id, "datasets": inputs }
+        http_client.post("runs/log-inputs", dct)
 
 
 @click.command()
